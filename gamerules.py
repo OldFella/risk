@@ -5,130 +5,14 @@ from PyQt5.QtWidgets import *#QMainWindow, QApplication, QWidget, QGraphicsEllip
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import copy
-
-
-class node:
-
-	def __init__(self, name, continent, fraction = None, units = 0):
-		self.name = name
-		self.fraction = fraction
-		self.units = units
-		self.continent = continent 
-
-
-	def print_node(self):
-		print(self.name,self.continent, self.fraction, self.units)
+import definitions
 
 players = []
 
-# ----------------------------------------------------------- #
-
-# NA
-alaska = node('alaska','na')
-alberta = node('alberta', 'na')
-central_america = node('central_america', 'na')
-eastern_us = node('eastern_us', 'na')
-greenland = node('greenland', 'na')
-nw_territory = node('nw_territory', 'na')
-ontario = node('ontario', 'na')
-quebec = node('quebec', 'na')
-western_us = node('western_us', 'na')
-
-# South America
-argentina = node('argentina', 'sa')
-brazil = node('brazil', 'sa')
-peru = node('peru', 'sa')
-venezuela = node('venezuela', 'sa')
-
-# EU
-great_britain = node('great_britain', 'eu')
-iceland = node('iceland', 'eu')
-northern_eu = node('northern_eu', 'eu')
-scandinavia = node('scandinavia', 'eu')
-southern_eu = node('southern_eu', 'eu')
-ukraine = node('ukraine', 'eu')
-western_eu = node('western_eu', 'eu')
-
-# Asia
-afghanistan = node('afghanistan', 'as')
-china = node('china', 'as')
-india = node('india', 'as')
-irkutsk = node('irkutsk', 'as')
-japan = node('japan', 'as')
-kamchatka = node('kamchatka', 'as')
-middle_east = node('middle_east', 'as')
-mongolia = node('mongolia', 'as')
-siam = node('siam', 'as')
-siberia = node('siberia', 'as')
-ural = node('ural', 'as')
-yakutsk = node('yakutsk', 'as')
-
-# Africa
-congo = node('congo', 'af')
-east_af = node('east_af', 'af')
-egypt = node('egypt', 'af')
-madagascar = node('madagascar', 'af')
-north_af = node('north_af', 'af')
-south_af = node('south_af', 'af')
-
-# AUS
-eastern_aus = node('eastern_aus', 'aus')
-indonesia = node('indonesia', 'aus')
-new_guinea = node('new_guinea', 'aus')
-western_aus = node('western_aus', 'aus')
-
-# ----------------------------------------------------------- #
-
 colors = ['blue', 'green', 'red', 'yellow', 'purple']
-nodes = [alaska, alberta,central_america, eastern_us, greenland, nw_territory, ontario, quebec, western_us,
- argentina, brazil, peru, venezuela,
- great_britain, iceland, northern_eu, scandinavia, southern_eu, ukraine, western_eu,
- congo, east_af, egypt, madagascar, north_af, south_af,
- afghanistan, china, india, irkutsk, japan, kamchatka, middle_east, mongolia, siam, siberia, ural, yakutsk,
- eastern_aus, indonesia, new_guinea, western_aus]
-graph = {alaska:[alberta, nw_territory, kamchatka],
-		alberta:[alaska, nw_territory, ontario, western_us],
-		central_america:[eastern_us, western_us, venezuela],
-		eastern_us:[central_america, eastern_us, ontario, quebec],
-		greenland:[nw_territory, ontario, quebec, iceland],
-		nw_territory:[alaska, alberta, ontario, greenland],
-		ontario:[alberta, eastern_us, greenland, nw_territory, quebec, western_us],
-		quebec:[eastern_us, greenland, ontario],
-		western_us:[alberta,central_america, eastern_us, ontario],
-		argentina:[brazil, peru],
-		brazil:[argentina, peru, venezuela, north_af],
-		peru:[argentina, brazil, venezuela],
-		venezuela:[brazil, peru, central_america],
-		great_britain:[iceland, northern_eu, scandinavia, western_eu],
-		iceland:[great_britain, scandinavia, greenland],
-		northern_eu:[great_britain, scandinavia, southern_eu, ukraine],
-		scandinavia:[great_britain, iceland, northern_eu, ukraine],
-		southern_eu:[northern_eu, ukraine, middle_east, north_af, egypt],
-		ukraine:[northern_eu, scandinavia, southern_eu, middle_east, afghanistan, ural],
-		western_eu:[great_britain, northern_eu, southern_eu, north_af],
-		congo:[east_af, south_af, north_af],
-		east_af:[congo, egypt, madagascar, south_af, middle_east],
-		egypt:[east_af, north_af, southern_eu, middle_east],
-		madagascar:[east_af,south_af],
-		north_af:[congo, east_af, egypt, western_eu, southern_eu, brazil],
-		south_af:[congo, east_af, madagascar],
-		afghanistan:[china, india, middle_east, ural],
-		china:[afghanistan, india, mongolia, siberia, ural, siam],
-		india:[afghanistan, china, middle_east, siam],
-		irkutsk:[kamchatka, mongolia, siberia, yakutsk],
-		japan:[kamchatka, mongolia],
-		kamchatka:[irkutsk, japan, mongolia, yakutsk, alaska],
-		middle_east:[afghanistan, india, east_af, egypt, southern_eu, ukraine],
-		mongolia:[china, irkutsk, japan, yakutsk, siberia, kamchatka],
-		siam:[china, india, indonesia],
-		siberia:[china, irkutsk, mongolia, yakutsk, ural],
-		ural:[afghanistan, china, siberia, ukraine],
-		yakutsk:[irkutsk, kamchatka, siberia],
-		eastern_aus:[new_guinea, western_aus],
-		indonesia:[new_guinea, western_aus, siam],
-		new_guinea:[eastern_aus, indonesia, western_aus],
-		western_aus:[eastern_aus, indonesia, new_guinea]}
 
+
+nodes = list(definitions.graph.keys())
 
 def init_graph(nodes):
 	for state in nodes:
@@ -229,7 +113,7 @@ def calculate_attack(number_of_attackers, number_of_defenders):
 
 
 def attack(attacking_state, defending_state, number_of_attackers, number_of_defenders):
-	if defending_state not in graph[attacking_state]:
+	if defending_state not in definitions.graph[attacking_state]:
 		print('states are not neighbours')
 		return False
 	if number_of_attackers > attacking_state.units -1:
@@ -420,10 +304,10 @@ class Risk(QMainWindow):
 
 
 
-siam.fraction = Qt.blue
-siam.units = 10
-indonesia.fraction = Qt.red
-indonesia.units = 3
+definitions.siam.fraction = Qt.blue
+definitions.siam.units = 10
+definitions.indonesia.fraction = Qt.red
+definitions.indonesia.units = 3
 # indonesia.print_node()
 # siam.print_node()
 # attack(siam, indonesia, 9, 2)

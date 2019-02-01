@@ -4,8 +4,9 @@ import sys
 from PyQt5.QtWidgets import *#QMainWindow, QApplication, QWidget, QGraphicsEllipseItem
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+import shapely
 import copy
-
+import definitions
 
 size = 25
 
@@ -63,12 +64,12 @@ Indonesia = []
 New_Guinea = []
 Western_Australia = []
 
-polygonlist = [Alaska,Alberta,Central_America, Eastern_US,Greenland, NW_Territory, Ontario,Quebec, Western_US,
+polygonlist2 = [Alaska,Alberta,Central_America, Eastern_US,Greenland, NW_Territory, Ontario,Quebec, Western_US,
 			Argentinia, Brazil, Peru, Venezuela,
 			Great_Britain, Iceland, Northern_Europe,Scandinavia, Southern_Europe, Eastern_Europe, Western_Europe,
 			Congo, East_Africa, Egypt, Madagascar, North_Africa, South_Africa]
 
-
+states = list(definitions.graph.keys())
 
 points = []
 for point in North_Africa:
@@ -113,6 +114,7 @@ class polygons(QMainWindow):
 
 	def __init__(self):
 			super().__init__()
+			self.buttons = []
 			self.initUI()
 
 	def initUI(self):
@@ -120,14 +122,40 @@ class polygons(QMainWindow):
 		self.setWindowTitle('Polygons')
 		self.setGeometry(100, 100, 1000, 600)
 		self.setStyleSheet('background-color:#060149;')
+		#self.setCentralWidget(buttons)
+		pal = 'background-color: '
+		color = pal + '#FFFF00;'
+		for state in states:
+			qpoints = []
+			if state.startpoint[0] == -1:
+				break
+				
+			for point in state.shape:
+				
+				start_x = state.startpoint[0]*size
+				start_y = state.startpoint[1]*size
+				qpoints.append(QPoint(start_x + point[0]*size,start_y + point[1]*size))
 
-		self.button = QPushButton('Hello',self)
-		self.button.setMask(QRegion(polygon))
-		self.button.resize(6*size,6*size)
-		self.button.move(13.5*size,7.5*size)
-		self.button.setStyleSheet('background-color:#F88901;')
-		#button.show()
-		#self.setLayout()
+			poly = QPolygon(qpoints)
+			button = QPushButton(state.name,self)
+			button.setMask(QRegion(poly))
+			button.resize(45*size,30*size)
+			if state.continent == 'sa':
+				color = pal + '#00CBEF;'
+			if state.continent == 'eu':
+				color = pal + '#FF0000;'
+			if state.continent == 'af':
+				color = pal + '#F88901;'
+			if state.continent == 'na':
+				color = pal + '#FFFF00;'
+			button.setStyleSheet(color) #+ 'border-width:5px;border-style: solid;border-color: black')
+			#button.setStyleSheet()
+			self.buttons.append(button)
+		#self.button = QPushButton('0,\n None',self)
+		#self.button.setMask(QRegion(polygon))
+		#self.button.resize(6*size,6*size)
+		#self.button.move(13.5*size,7.5*size)
+		#self.button.setStyleSheet('background-color:#F88901;')
 		self.show()
 
 	def paintEvent(self,Event):
@@ -135,26 +163,26 @@ class polygons(QMainWindow):
 		paint.begin(self)
 		paint.setBrush(Qt.yellow)
 		paint.setPen(Qt.black)
-		for x in range(60):
-			paint.drawLine(0, x*size, 1600, x*size)
-			paint.drawLine(x*size,0, x*size, 1600)
-		start_x = size
-		start_y = size
-		for x in range(len(polygonlist)):
-			qpoints = []
-			for point in polygonlist[x]:
-				start_x = startpoints[x][0]
-				start_y = startpoints[x][1]
-				qpoints.append(QPoint(start_x + point[0]*size,start_y + point[1]*size))
-			if x == 9:
-				paint.setBrush(QColor('#00CBEF'))
-			if x == 13:
-				paint.setBrush(Qt.red)
-			if x == 20:
-				paint.setBrush(QColor('#F88901'))
-			poly = QPolygon(qpoints)
-			paint.drawPolygon(poly)
-			#print(poly.size())
+		#for x in range(60):
+		#	paint.drawLine(0, x*size, 1600, x*size)
+		#	paint.drawLine(x*size,0, x*size, 1600)
+		# start_x = size
+		# start_y = size
+		# for x in range(len(polygonlist)):
+		# 	qpoints = []
+		# 	for point in polygonlist[x]:
+		# 		start_x = startpoints[x][0]
+		# 		start_y = startpoints[x][1]
+		# 		qpoints.append(QPoint(start_x + point[0]*size,start_y + point[1]*size))
+		# 	if x == 9:
+		# 		paint.setBrush(QColor('#00CBEF'))
+		# 	if x == 13:
+		# 		paint.setBrush(Qt.red)
+		# 	if x == 20:
+		# 		paint.setBrush(QColor('#F88901'))
+		# 	poly = QPolygon(qpoints)
+		# 	paint.drawPolygon(poly)
+		# 	#print(poly.size())
 
 		paint.end()
 
