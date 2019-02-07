@@ -92,20 +92,44 @@ graph = {alaska:[alberta, nw_territory, kamchatka],
 		egypt:[east_af, north_af, southern_eu, middle_east],
 		madagascar:[east_af,south_af],
 		north_af:[congo, east_af, egypt, western_eu, southern_eu, brazil],
-		south_af:[congo, east_af, madagascar],
-		afghanistan:[china, india, middle_east, ural],
-		china:[afghanistan, india, mongolia, siberia, ural, siam],
-		india:[afghanistan, china, middle_east, siam],
-		irkutsk:[kamchatka, mongolia, siberia, yakutsk],
-		japan:[kamchatka, mongolia],
-		kamchatka:[irkutsk, japan, mongolia, yakutsk, alaska],
-		middle_east:[afghanistan, india, east_af, egypt, southern_eu, ukraine],
-		mongolia:[china, irkutsk, japan, yakutsk, siberia, kamchatka],
-		siam:[china, india, indonesia],
-		siberia:[china, irkutsk, mongolia, yakutsk, ural],
-		ural:[afghanistan, china, siberia, ukraine],
-		yakutsk:[irkutsk, kamchatka, siberia],
-		eastern_aus:[new_guinea, western_aus],
-		indonesia:[new_guinea, western_aus, siam],
-		new_guinea:[eastern_aus, indonesia, western_aus],
-		western_aus:[eastern_aus, indonesia, new_guinea]}
+		south_af:[congo, east_af, madagascar]}#,
+		# afghanistan:[china, india, middle_east, ural],
+		# china:[afghanistan, india, mongolia, siberia, ural, siam],
+		# india:[afghanistan, china, middle_east, siam],
+		# irkutsk:[kamchatka, mongolia, siberia, yakutsk],
+		# japan:[kamchatka, mongolia],
+		# kamchatka:[irkutsk, japan, mongolia, yakutsk, alaska],
+		# middle_east:[afghanistan, india, east_af, egypt, southern_eu, ukraine],
+		# mongolia:[china, irkutsk, japan, yakutsk, siberia, kamchatka],
+		# siam:[china, india, indonesia],
+		# siberia:[china, irkutsk, mongolia, yakutsk, ural],
+		# ural:[afghanistan, china, siberia, ukraine],
+		# yakutsk:[irkutsk, kamchatka, siberia],
+		# eastern_aus:[new_guinea, western_aus],
+		# indonesia:[new_guinea, western_aus, siam],
+		# new_guinea:[eastern_aus, indonesia, western_aus],
+		# western_aus:[eastern_aus, indonesia, new_guinea]}
+
+
+#Colors 
+
+RED = '#FF0000'
+YELLOW = '#FFFF00'
+GREEN = '#00FF00'
+BLUE = '#00F9FD'
+PURPLE = '#FA02D4'
+
+#Players
+
+class Player:
+	def __init__(self, name, color, units = 0):
+		self.name = name
+		self. color = color
+		self.units = units
+
+
+red = Player('red', RED)
+blue = Player('blue', BLUE)
+yellow = Player('yellow', YELLOW)
+green = Player('green', GREEN)
+purple = Player('purple', PURPLE)

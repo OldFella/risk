@@ -9,7 +9,7 @@ import definitions
 
 players = []
 
-colors = ['blue', 'green', 'red', 'yellow', 'purple']
+colors = [definitions.blue, definitions.green, definitions.red, definitions.yellow, definitions.purple]
 
 
 nodes = list(definitions.graph.keys())
@@ -71,6 +71,8 @@ def calculate_additional_armys(player):
 
 
 
+def start_armys(player):
+	return numpy.ceil(2*len(nodes)/player)
 
 
 
@@ -304,18 +306,18 @@ class Risk(QMainWindow):
 
 
 
-definitions.siam.fraction = Qt.blue
-definitions.siam.units = 10
-definitions.indonesia.fraction = Qt.red
-definitions.indonesia.units = 3
-# indonesia.print_node()
-# siam.print_node()
-# attack(siam, indonesia, 9, 2)
-# attack(siam, indonesia, siam.units-1, indonesia.units)
+# definitions.siam.fraction = Qt.blue
+# definitions.siam.units = 10
+# definitions.indonesia.fraction = Qt.red
+# definitions.indonesia.units = 3
+# # indonesia.print_node()
+# # siam.print_node()
+# # attack(siam, indonesia, 9, 2)
+# # attack(siam, indonesia, siam.units-1, indonesia.units)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     
-    app = QApplication(sys.argv)
+#     app = QApplication(sys.argv)
 
-    ex = Risk()
-    sys.exit(app.exec_())
+#     ex = Risk()
+#     sys.exit(app.exec_())
