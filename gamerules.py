@@ -9,7 +9,7 @@ import definitions
 
 players = []
 
-colors = [definitions.blue, definitions.green, definitions.red, definitions.yellow, definitions.purple]
+colors = [definitions.blue, definitions.green, definitions.red, definitions.yellow, definitions.purple, definitions.white]
 
 
 nodes = list(definitions.graph.keys())
@@ -66,13 +66,13 @@ def calculate_additional_armys(player):
 
 	else:
 		result += int(total/3)
-	return result
+	return int(result)
 
 
 
 
 def start_armys(player):
-	return numpy.ceil(2*len(nodes)/player)
+	return int(numpy.ceil(2*len(nodes)/player))
 
 
 

@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTableWidget, QTableWidgetItem
-from PyQt5.QtGui import QPainter, QPolygon, QRegion
+from PyQt5.QtGui import QPainter, QPolygon, QRegion, QFont
 from PyQt5.QtCore import QPoint, Qt
 #import shapely
 import copy
@@ -46,13 +46,15 @@ class frontend(QMainWindow):
 			self.player1 = True 
 			self.tabletoggle = True
 			
-			if number_of_players > 5:
-				number_of_players = 5
+			if number_of_players > 6:
+				number_of_players = 6
 			self.players = gamerules.colors[0:number_of_players]
 			start_armys = gamerules.start_armys(number_of_players)
 			for player in self.players:
 				player.units = start_armys
 			self.initializedStates = list(definitions.graph.keys())
+			self.lastplayer = self.players[number_of_players-1]
+			self.currentPhase = 'Inititialiation'
 
 
 	def initUI(self):
@@ -139,7 +141,8 @@ class frontend(QMainWindow):
 
 				thisState.units = 1
 				thisState.fraction = thisPlayer.name
-				thisButton.setStyleSheet(pal + thisPlayer.color)
+				
+				thisButton.setStyleSheet(thisState.alignment+pal + thisPlayer.color)
 				thisButton.setText(str(thisState.units))
 
 				successfullAction = True
@@ -155,11 +158,42 @@ class frontend(QMainWindow):
 
 		if successfullAction:
 			thisPlayer.units -= 1
-			print(thisPlayer.name, ' ',thisPlayer.units)
+			#print(thisPlayer.name, ' ',thisPlayer.units)
 			self.players = self.players[1:]
 			self.players.append(thisPlayer)
+			self.repaint()
+
+		if self.lastplayer.units == 0:
+			for button in list(self.buttons.keys()):
+				button.clicked.connect(self.onClick_beginning_Phase)
+				button.clicked.disconnect(self.onClick_init)
+			self.calculate_begin()
+			self.repaint()
 
 
+
+	def calculate_begin(self):
+		#print('calculate_begin')
+		current_player = self.players[0]
+		additional_units = gamerules.calculate_additional_armys(current_player)
+		current_player.units = additional_units
+		self.currentPhase = 'Reinforcement'
+		#print(current_player.units)
+
+	def onClick_beginning_Phase(self):
+		#print('onClick_beginning_Phase')
+		current_player = self.players[0]
+		current_button = self.sender()
+		current_state = self.buttons[current_button]
+		if current_player.units > 0 and current_state.fraction == current_player.name:
+			current_state.units += 1
+			current_player.units -= 1
+			current_button.setText(str(current_state.units))
+			#print(current_player.units)
+			self.repaint()
+
+		if current_player.units == 0:
+			pass
 
 
 
@@ -177,6 +211,10 @@ class frontend(QMainWindow):
 			paint.drawLine(x*size,0, x*size, 1600)
 		start_x = size
 		start_y = size
+		paint.setPen(Qt.white)
+		paint.setFont(QFont('Decorative', 10))
+		paint.drawText(Event.rect(),Qt.AlignRight,(self.players[0].name + ': '+ str(self.players[0].units)))
+		paint.drawText(size*19,size ,self.currentPhase)
 		# for state in states:
 		# 	qpoints = []
 		# 	if state.startpoint[0] == -1:
@@ -206,5 +244,5 @@ if __name__ == '__main__':
 
 	app = QApplication(sys.argv)
 	size = app.desktop().screenGeometry().height()/30
-	ex = frontend(5, size)
+	ex = frontend(6, size)
 	sys.exit(app.exec_())
