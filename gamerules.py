@@ -61,8 +61,8 @@ def calculate_additional_armys(player):
 	if south_america == 4:
 		result += 2
 
-	if int(total/3) < 3:
-		result += 3
+	if int(total/3 + result) < 3:
+		result = 3
 
 	else:
 		result += int(total/3)
@@ -70,6 +70,13 @@ def calculate_additional_armys(player):
 
 
 
+
+def calculate_missing_edges(graph):
+	for node in list(graph.keys()):
+		for neighbour in graph[node]:
+			#print(node.name, neighbour.name)
+			if neighbour in graph[node] and node not in graph[neighbour]:
+				print(node.name, neighbour.name)
 
 def start_armys(player):
 	return int(numpy.ceil(2*len(nodes)/player))
@@ -116,29 +123,24 @@ def calculate_attack(number_of_attackers, number_of_defenders):
 
 def attack(attacking_state, defending_state, number_of_attackers, number_of_defenders):
 	if defending_state not in definitions.graph[attacking_state]:
-		print('states are not neighbours')
-		return False
+		return 'states are not neighbours'
+		
 	if number_of_attackers > attacking_state.units -1:
-		print('the attacking army isn\'t large enough')
-		return False
+		return 'the attacking army isn\'t large enough'
+		
 	if number_of_defenders > defending_state.units:
-		print('the defending army isn\'t large enough')
-		return False
+		return 'the defending army isn\'t large enough'
+		
 	if attacking_state.fraction == defending_state.fraction:
-		print('you can\'t attack your own state')
-		return False
+		return 'you can\'t attack your own state'
 	[fallen, dice_results] = calculate_attack(number_of_attackers, number_of_defenders)
-	print('dice results attackers: ', dice_results[0], ' dice results defenders: ' , dice_results[1])
-	print('fallen attackers: ', fallen[0], ' fallen defenders: ', fallen[1])
 	attacking_state.units -= fallen[0]
 	defending_state.units -= fallen[1]
 	if defending_state.units == 0:
 		conquer_state(defending_state, attacking_state.fraction)
 		attacking_state.units -= 1
 
-	attacking_state.print_node()
-	defending_state.print_node()
-	return True
+	return 'dice results attackers: ' + str(dice_results[0]) + ', dice results defenders: ' + str(dice_results[1]) + ', fallen attackers: ' + str(fallen[0]) + ', fallen defenders: ' + str(fallen[1])
 
 def init_game(graph = nodes, number_of_players = 2):
 	init_graph(graph)
