@@ -19,9 +19,9 @@ def init_graph(nodes):
 		state.fraction = None
 		state.units = 0
 
-def conquer_state(state, fraction):
+def conquer_state(state, fraction, units):
 	state.fraction = fraction
-	state.units = 1
+	state.units = units
 
 def calculate_additional_armys(player):
 	australia = 0
@@ -61,6 +61,7 @@ def calculate_additional_armys(player):
 	if south_america == 4:
 		result += 2
 
+	#print(result, total)
 	if int(total/3 + result) < 3:
 		result = 3
 
@@ -68,6 +69,22 @@ def calculate_additional_armys(player):
 		result += int(total/3)
 	return int(result)
 
+def calculate_connected_states(state):
+	result = []
+	queue = [state]
+	player = state.fraction
+	finished = []
+	while queue != []:
+		if queue[0].fraction == player:
+			result.append(queue[0])
+			for state in definitions.graph[queue[0]]:
+				if state not in finished and state not in queue:
+					queue.append(state)
+		finished.append(queue[0])
+		queue = queue[1:]
+
+		#print(len(queue))
+	return result
 
 
 
@@ -122,6 +139,8 @@ def calculate_attack(number_of_attackers, number_of_defenders):
 
 
 def attack(attacking_state, defending_state, number_of_attackers, number_of_defenders):
+	player_attack = attacking_state.fraction.name
+	player_defense = defending_state.fraction.name
 	if defending_state not in definitions.graph[attacking_state]:
 		return 'states are not neighbours'
 		
@@ -137,10 +156,10 @@ def attack(attacking_state, defending_state, number_of_attackers, number_of_defe
 	attacking_state.units -= fallen[0]
 	defending_state.units -= fallen[1]
 	if defending_state.units == 0:
-		conquer_state(defending_state, attacking_state.fraction)
-		attacking_state.units -= 1
+		conquer_state(defending_state, attacking_state.fraction, number_of_attackers - fallen[0])
+		attacking_state.units -= number_of_attackers - fallen[0]
 
-	return 'dice results attackers: ' + str(dice_results[0]) + ', dice results defenders: ' + str(dice_results[1]) + ', fallen attackers: ' + str(fallen[0]) + ', fallen defenders: ' + str(fallen[1])
+	return 'dice results: '+ player_attack + ': ' + str(dice_results[0]) + ', ' + player_defense + ': ' + str(dice_results[1]) + ', fallen: ' + player_attack + ': ' + str(fallen[0])+', ' + player_defense + ': ' + str(fallen[1])
 
 def init_game(graph = nodes, number_of_players = 2):
 	init_graph(graph)
