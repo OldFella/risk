@@ -125,10 +125,20 @@ WHITE = '#FFFFFF'
 #Players
 
 class Player:
-	def __init__(self, name, color, units = 0):
+	def __init__(self, name, color, units = 0, states = {}, alive = True, mission = None):
 		self.name = name
 		self. color = color
 		self.units = units
+		self.states = states
+		self.alive = alive
+		self.mission = mission
+		if self.states == {}:
+			self.states['na'] = []
+			self.states['sa'] = []
+			self.states['eu'] = []
+			self.states['as'] = []
+			self.states['aus'] = []
+			self.states['af'] = []
 
 
 red = Player('red', RED)
@@ -137,3 +147,152 @@ yellow = Player('yellow', YELLOW)
 green = Player('green', GREEN)
 purple = Player('purple', PURPLE)
 white = Player('white',WHITE)
+
+red_states_dic = {}
+blue_states_dic = {}
+yellow_states_dic = {}
+green_states_dic = {}
+purple_states_dic = {}
+white_states_dic = {}
+
+dict_list = [red_states_dic, blue_states_dic, yellow_states_dic, green_states_dic, purple_states_dic, white_states_dic]
+
+for dic in dict_list:
+	dic['na'] = []
+	dic['sa'] = []
+	dic['eu'] = []
+	dic['as'] = []
+	dic['af'] = []
+	dic['aus'] = []
+
+# Win Missions:
+class Mission:
+	def __init__(self,player = None, continents = [], number_of_states = 0, eliminate_player= None, units_in_states = None, third_continent = False, explanation = ''):
+		self.player = player
+		self.continents = continents
+		self.number_of_states = number_of_states
+		self.eliminate_player = eliminate_player
+		self.units_in_states = units_in_states
+		self.missioncomplete = False
+		self.third_continent = third_continent
+		self.explanation = explanation
+
+
+	def update_mission(self):
+		if self.player == self.eliminate_player and self.player != None:
+			self.eliminate_player == None
+			self.number_of_states = 24
+			self.explanation = 'Conquer 24 States'
+
+
+	def check_continents(self):
+		if self.continents == []:
+			return True
+		number_of_states_per_continent = -1
+		for continent in self.continents:
+
+			if continent == 'na':
+				number_of_states_per_continent = 9
+			elif continent == 'sa':
+				number_of_states_per_continent = 4
+			elif continent == 'eu':
+				number_of_states_per_continent = 7
+			elif continent == 'af':
+				number_of_states_per_continent = 6
+			elif continent == 'as':
+				number_of_states_per_continent = 12
+			elif continent == 'aus':
+				number_of_states_per_continent = 4
+
+			if len(self.player.states[continent]) != number_of_states_per_continent:
+				return False
+
+		return True
+
+	def check_number_of_states(self):
+		if self.number_of_states == 0:
+			return True
+		state_counter = 0
+		for continent in self.player.states.keys():
+			if self.player.states[continent] == []:
+				pass
+			for state in self.player.states[continent]:
+				state_counter += 1
+				if state_counter == self.number_of_states:
+					return True
+
+	def check_eliminate_player(self):
+		if self.eliminate_player == None:
+			return True
+		return not self.eliminate_player.alive
+
+	def check_units_in_states(self):
+		if self.units_in_states == None:
+			return True
+		for continent in self.player.states.keys():
+			if self.player.states[continent] == []:
+				pass
+			for state in self.player.states[continent]:
+				if state.units < self.units_in_states:
+					return False
+
+		return True
+
+	def check_third_continent(self):
+		if not self.third_continent:
+			return True
+		continent_counter = 0
+		for continent in self.player.states.keys():
+			continent_length = len(self.player.states[continent])
+			if continent == 'na' and continent_length == 9:
+				continent_counter += 1
+			elif continent == 'sa' and continent_length == 4:
+				continent_counter += 1
+			elif continent == 'eu' and continent_length == 7:
+				continent_counter += 1
+			elif continent == 'af' and continent_length == 6:
+				continent_counter += 1
+			elif continent == 'as' and continent_length == 12:
+				continent_counter += 1
+			elif continent == 'aus' and continent_length == 4:
+				continent_counter += 1
+			if counter == 3:
+				return True
+
+
+
+
+	def check_mission_complete(self):
+		self.missioncomplete = self.check_continents()and self.check_third_continent() and self.check_eliminate_player() and self.check_units_in_states() and self.check_number_of_states()
+
+
+
+
+mission1 =  Mission(continents = ['na', 'af'], explanation = 'Conquer North America and Africa')
+mission2 = Mission(continents = ['as', 'af'], explanation = 'Conquer Asia and Africa')
+mission3 = Mission(continents = ['as', 'sa'], explanation = 'Conquer Asia and South America')
+mission4 = Mission(eliminate_player = red, explanation = 'Eliminate Player red')
+mission5 = Mission(eliminate_player = blue, explanation = 'Eliminate Player blue')
+mission6 = Mission(eliminate_player = yellow, explanation = 'Eliminate Player yellow')
+mission7 = Mission(eliminate_player = green, explanation = 'Eliminate Player green')
+mission8 = Mission(eliminate_player = purple, explanation = 'Eliminate Player purple')
+mission9 = Mission(eliminate_player = white, explanation = 'Eliminate Player white')
+mission10 = Mission(number_of_states = 18, units_in_states = 2, explanation = 'Conquer 18 States with atleast 2 armies in each State')
+mission11 = Mission(continents = ['na', 'aus'], explanation = 'Conquer North America and Australia')
+mission12 = Mission(number_of_states = 24, explanation = 'Conquer 24 States')
+mission13 = Mission(continents = ['eu', 'sa'], third_continent = True, explanation = 'Conquer Europe, South America and a third Continent of your Choice')
+mission14 = Mission(continents = ['eu', 'aus'], third_continent = True, explanation = 'Conquer Europe, Australia and a third Continent of your Choice')
+
+missions = []
+
+def available_missions(number_of_players):
+
+	missions = [mission1, mission2, mission3, mission4, mission5, mission7, mission10, mission11, mission12, mission13, mission14]
+	if number_of_players > 3:
+		missions.append(mission6)
+	if number_of_players > 4:	
+		missions.append(mission8)
+	if number_of_players > 5:
+		missions.append(mission9)
+
+	return missions

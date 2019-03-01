@@ -51,11 +51,13 @@ class frontend(QMainWindow):
 			print(self.width, self.height)
 			self.player1 = True 
 			self.tabletoggle = True
+			self.number_of_players = number_of_players
 			if number_of_players < 3:
 				number_of_players = 3
 			if number_of_players > 6:
 				number_of_players = 6
 			self.players = gamerules.colors[0:number_of_players]
+			self.give_mission_to_players()
 			start_armys = gamerules.start_armys(number_of_players)
 			for player in self.players:
 				player.units = start_armys
@@ -72,7 +74,7 @@ class frontend(QMainWindow):
 			self.size_height = self.height/24
 			self.startpoint = (2* self.size_width, self.size_height)
 			self.initUI()
-			self.debug_init()
+			#self.debug_init()
 			#gamerules.calculate_missing_edges(definitions.graph)
 
 
@@ -196,6 +198,7 @@ class frontend(QMainWindow):
 		#textfieldLayout.addWidget(button_widget) 
 		#button_widget.setAlignment(Qt.AlignCenter)
 		#self.setCentralWidget(main_widget)
+		#self.calculate_begin()
 		self.showMaximized()
 
 	def onClick_Test(self):
@@ -230,6 +233,9 @@ class frontend(QMainWindow):
 		for button in self.buttons.keys():
 			firstplayer = self.players[0]
 			state = self.buttons[button]
+			#print(firstplayer.name, state.name)
+			#print(firstplayer.states[state.continent])
+
 			state.fraction = firstplayer
 			state.units = 2
 			firstplayer.units -= 2
@@ -240,8 +246,55 @@ class frontend(QMainWindow):
 			button.clicked.disconnect(self.onClick_init)
 			button.clicked.connect(self.onClick_beginning_Phase)
 			self.connected_actions[button] = self.onClick_beginning_Phase
+			#print(firstplayer.name)
+		self.set_states_to_player()
+		for player in self.players:
+			print(player.name)
+			for continent in player.states:
+				print(continent)
+				#print(player.states[continent].name)
+				for state in player.states[continent]:
+					print(state.name)
 		self.calculate_begin()
+
 		self.initializedStates = []
+
+
+
+	def give_mission_to_players(self):
+		missions = definitions.available_missions(self.number_of_players)
+
+		#print(missions)
+		for player in self.players:
+			mission = numpy.random.choice(missions)
+			player.mission = mission
+			player.mission.player = player
+			player.mission.update_mission
+			missions.remove(mission)
+			print(player.name, mission.explanation)
+
+	def set_states_to_player(self):
+		for state in states:
+			
+			if state.fraction.name == 'blue':
+				definitions.blue_states_dic[state.continent].append(state)
+			elif state.fraction.name == 'red':
+				definitions.red_states_dic[state.continent].append(state)
+			elif state.fraction.name == 'green':
+				definitions.green_states_dic[state.continent].append(state)
+			elif state.fraction.name == 'yellow':
+				definitions.yellow_states_dic[state.continent].append(state)
+			elif state.fraction.name == 'purple':
+				definitions.purple_states_dic[state.continent].append(state)
+			elif state.fraction.name == 'white':
+				definitions.white_states_dic[state.continent].append(state)
+		definitions.blue.states = definitions.blue_states_dic
+		definitions.red.states = definitions.red_states_dic
+		definitions.green.states = definitions.green_states_dic
+		definitions.yellow.states = definitions.yellow_states_dic
+		definitions.purple.states = definitions.purple_states_dic
+		definitions.white.states = definitions.white_states_dic
+		#print(states_blue)
 
 	def onClick_init(self):
 		thisButton = self.sender()
@@ -272,12 +325,14 @@ class frontend(QMainWindow):
 
 		if successfullAction:
 			thisPlayer.units -= 1
+			thisPlayer.states[thisState.continent].append(thisState)
 			#print(thisPlayer.name, ' ',thisPlayer.units)
 			self.players = self.players[1:]
 			self.players.append(thisPlayer)
 			self.repaint()
 
 		if self.lastplayer.units == 0:
+			self.set_states_to_player()
 			for button in list(self.buttons.keys()):
 				button.clicked.connect(self.onClick_beginning_Phase)
 				button.clicked.disconnect(self.connected_actions[button])
@@ -305,6 +360,7 @@ class frontend(QMainWindow):
 	def onClick_beginning_Phase(self):
 		#print('onClick_beginning_Phase')
 		current_player = self.players[0]
+		
 		current_button = self.sender()
 		current_state = self.buttons[current_button]
 		if current_player.units > 0 and current_state.fraction == current_player:
@@ -349,8 +405,11 @@ class frontend(QMainWindow):
 			defending_button = buttons[list(self.buttons.values()).index(defending_state)]
 			defending_button.setText(str(defending_state.units))
 			defending_button.setStyleSheet(defending_state.alignment+'background-color: ' + defending_state.fraction.color)
-			defending_button.clicked.connect(self.onClick_attacking)
-			#defending_button.clicked.disconnect(self.onClick_defending)
+			if defending_state.fraction == attacking_state.fraction:
+				self.players[0].states[defending_state.continent].append(defending_state)
+				defending_button.clicked.connect(self.onClick_attacking)
+				defending_button.clicked.disconnect(self.onClick_defending)
+				self.set_states_to_player()
 			self.input1.clear()
 			self.input2.clear()
 			self.infofield.append(answer)
@@ -439,7 +498,15 @@ class frontend(QMainWindow):
 
 	def nextPlayer(self):
 		firstplayer = self.players[0]
+		firstplayer.mission.check_mission_complete()
+		if firstplayer.mission.missioncomplete:
+			print(firstplayer.name, 'won')
+			return
 		self.players = self.players[1:]
+		for player in self.players:
+			gamerules.check_player_alive(player)
+			if not player.alive:
+				self.players.remove(player)
 		self.players.append(firstplayer)
 		#self.moving_button.clicked.disconnect(self.onClick_movebutton)
 		self.calculate_begin()
@@ -537,5 +604,5 @@ if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	width = app.desktop().screenGeometry().width()
 	height = app.desktop().screenGeometry().height()
-	ex = frontend(6, width, height)
+	ex = frontend(3, width, height)
 	sys.exit(app.exec_())

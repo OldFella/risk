@@ -86,6 +86,15 @@ def calculate_connected_states(state):
 		#print(len(queue))
 	return result
 
+def check_player_alive(player):
+	if not player.alive:
+		return
+
+	for continent in player.states:
+		if continent != []:
+			return
+
+	player.alive = False
 
 
 def calculate_missing_edges(graph):
@@ -99,7 +108,8 @@ def start_armys(player):
 	return int(numpy.ceil(2*len(nodes)/player))
 
 
-
+def shuffle_missions():
+	numpy.random.shuffle(definitions.missions)
 
 
 def calculate_attack(number_of_attackers, number_of_defenders):
