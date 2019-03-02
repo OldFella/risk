@@ -1,10 +1,4 @@
 import numpy
-import PyQt5
-import sys
-from PyQt5.QtWidgets import *#QMainWindow, QApplication, QWidget, QGraphicsEllipseItem
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-import copy
 import definitions
 
 players = []

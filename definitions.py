@@ -36,28 +36,36 @@ venezuela = node('venezuela', 'sa',[(1,0), (3,1),(1,2.5), (0,2), (0.5,0.5)],(5,1
 great_britain = node('great_britain', 'eu',[(0,0), (0.2,0), (0.6,1),(0,1.1)],(14.9,3.5))
 iceland = node('iceland', 'eu',[(0,0), (0.7,0), (0.7,0.5), (0,0.5)],(13.2,2.3))
 northern_eu = node('northern_eu', 'eu',[(0.5,0),(2.5,0),(2.5,0.7),(0.5,0.7), (0,0.2)],(15.8,4.3))
-scandinavia = node('scandinavia', 'eu',[(0,1.8),(1,0.5),(1.7,0),(3,0.3),(3,1.5),(2,1.5),(1.8,1.3),(2.3,1),(2,0.8),(1.3,1.5),(1,2.3),(0.7,2.3),(0.7,2),(0,2.3)],(16.3,1.7))
+scandinavia = node('scandinavia', 'eu',[(0,1.8),(1,0.5),(1.7,0),(3,0.3),(3,1.5),(2,1.5),(1.8,1.3),(2.3,1),
+										(2,0.8),(1.3,1.5),(1,2.3),(0.7,2.3),(0.7,2),(0,2.3)],(16.3,1.7))
 southern_eu = node('southern_eu', 'eu',[(0,0),(0,0.5),(1.3,2),(1.4,1.8),(0.5,0.5),(0.8,0.5),(2,2.5),(2,2),(2.8,1),(3,0)],(16.3,5))
 ukraine = node('ukraine', 'eu',[(1,0),(2,0.3),(4,0.5),(4,2.5),(3,2.5),(3,4.5),(2.5,4.3),(2,3),(0,3),(0,2.3),(1,1.5)],(18.3,2))
 western_eu = node('western_eu', 'eu',[(1.8,0),(2.3,0.5),(2.3,1),(1.8,1.2),(1,2),(0,2),(0,1),(1,1),(1,0.3)],(14,4.5))
 
 # Asia
 afghanistan = node('afghanistan', 'as', [(0,0.5),(1,0.5),(1,0),(2,0),(4,1),(4,2),(2,3.2),(1,2.8),(0.5,1),(0,1)], (21.3,4))
-china = node('china', 'as',[(0.5,0),(1,0),(3.5,2),(4.8,1.5),(5.1,1.8),(4.8,2),(6.5,3.8),(6.3,4),(4.5,4.5),(4,4.5),(3,3.9),(0.8,2.8),(0.8,2.5),(0,1.7),(0.5,1.4)],(24.8,4.6))
-india = node('india', 'as', [(0,0.9),(1.5,0),(2.3,0.8),(2.3,1.1),(4,2),(4,3),(4,3.5),(3.5,3.5),(2.8,4),(2.3,5.8),(2,5.8),(1.5,3),(0.2,2.7)], (23.3,6.3))
+china = node('china', 'as',[(0.5,0),(1,0),(3.5,2),(4.8,1.5),(5.1,1.8),(4.8,2),(6.5,3.8),(6.3,4),(4.5,4.5),
+							(4,4.5),(3,3.9),(0.8,2.8),(0.8,2.5),(0,1.7),(0.5,1.4)],(24.8,4.6))
+india = node('india', 'as', [(0,0.9),(1.5,0),(2.3,0.8),(2.3,1.1),(4,2),(4,3),(4,3.5),(3.5,3.5),(2.8,4),
+							(2.3,5.8),(2,5.8),(1.5,3),(0.2,2.7)], (23.3,6.3))
 irkutsk = node('irkutsk', 'as',[(0,1.4),(1.3,0),(4.3,0.3),(4.8,1.4)],(26,3.2))
 japan = node('japan', 'as', [(0.5,0),(1,0),(1,1.8),(0,2),(0,1.5),(0.5,1.5)], (32.5,5),'Text-align:right;')
-kamchatka = node('kamchatka', 'as',[(0,1.3),(1.7,0),(4,0.2),(3.5,1.8),(3.2,1.3),(3.2,1),(0.8,1.3),(0.8,1.8),(1,1.8),(1.5,2.3),(1.5,3.3),(1,3.3),(1,2.8),(0.5,2.3)],(30.3,2.2), 'Text-align:top;')
-middle_east = node('middle_east', 'as', [(0,0.5),(1,0),(1.8,0.3),(2.3,0.5),(2.6,1),(3.3,0.8),(4.3,1.2),(4.5,3),(3,2.5),(2.9,2.3),(2.7,2.3),(2.7,2.6),(3.3,3.5),(3.8,3.5),(4.3,4),(2.2,5.3),(1.2,2.7),(1,2.5),(1,1),(0.2,1)], (19,6))
+kamchatka = node('kamchatka', 'as',[(0,1.3),(1.7,0),(4,0.2),(3.5,1.8),(3.2,1.3),(3.2,1),(0.8,1.3),(0.8,1.8),
+									(1,1.8),(1.5,2.3),(1.5,3.3),(1,3.3),(1,2.8),(0.5,2.3)],(30.3,2.2), 'Text-align:top;')
+middle_east = node('middle_east', 'as', [(0,0.5),(1,0),(1.8,0.3),(2.3,0.5),(2.6,1),(3.3,0.8),(4.3,1.2),
+										(4.5,3),(3,2.5),(2.9,2.3),(2.7,2.3),(2.7,2.6),(3.3,3.5),(3.8,3.5),
+										(4.3,4),(2.2,5.3),(1.2,2.7),(1,2.5),(1,1),(0.2,1)], (19,6))
 mongolia = node('mongolia', 'as', [(0,0),(5,0),(5.5,0.5),(5.5,2),(6,2.5),(5.8,2.6),(5,2),(4,1.8),(3.7,1.5),(2.5,2)], (25.8,4.6))
-siam = node('siam', 'as', [(0,0),(1.5,0.9),(2,0.9), (2,1.5), (2.5,2), (2.5,3),(2,3.5), (1,2.5), (1,3.5),(1.5,4.5),(1.3,4.3),(0.8,3.5),(0.8,2.3) ,(0,1.5)], (27.3,8.2))
+siam = node('siam', 'as', [(0,0),(1.5,0.9),(2,0.9), (2,1.5), (2.5,2), (2.5,3),(2,3.5), (1,2.5), (1,3.5),
+							(1.5,4.5),(1.3,4.3),(0.8,3.5),(0.8,2.3),(0,1.5)], (27.3,8.2))
 siberia = node('siberia', 'as', [(0,0.5),(2,0),(3,0.3),(3.5,1.5),(2.2,2.8),(1.5,2.8),(1.5,2.5)],(23.8,1.8))
 ural = node('ural', 'as', [(0,0.2),(1.5,0),(3,2),(3,2.7),(1,1.7),(0,1.7)],(22.3,2.3))
 yakutsk = node('yakutsk', 'as',[(0,0),(5.2,0.2),(3.5,1.5),(0.5,1.2)],(26.8,2))
 
 # Africa
 congo = node('congo', 'af',[(0,1.5),(0.5,1.5),(1.5,0),(2.5,1.5),(3,1.5),(2,3),(1,3),(1,2.5),(0,2.5)],(16.5,11.5))
-east_af = node('east_af', 'af',[(0,0.3),(0,1.8),(1,3.3),(1.5,3.3),(0.5,4.8),(2,4.8),(2,3.8),(3,2.8),(4,1.8),(3,1.8),(2.3,0),(0.5,0),(0.5,0.3)],(18,9.7))
+east_af = node('east_af', 'af',[(0,0.3),(0,1.8),(1,3.3),(1.5,3.3),(0.5,4.8),(2,4.8),(2,3.8),(3,2.8),(4,1.8),
+								(3,1.8),(2.3,0),(0.5,0),(0.5,0.3)],(18,9.7))
 egypt = node('egypt', 'af',[(0,0),(1.5,0.5),(1.5,0),(3.5,0.5),(3.7,0.7),(3.5,1),(3.8,1.8),(2,1.8),(2,2),(1.5,2),(0,1)],(16.5,8))
 madagascar = node('madagascar', 'af',[(0.6,0),(0.8,0.2),(0.6,1.6),(0,1.6),(0.1,0.5)],(21,14.7))
 north_af = node('north_af', 'af',[(4,0),(4,2),(5.5,3),(5.5,4.5),(4.5,6),(4,6),(4,5.5),(3.5,5),(1.5,5.2),(0,3.5),(0,2.5),(1.5,0.3)],(12.5,7))
@@ -167,7 +175,8 @@ for dic in dict_list:
 
 # Win Missions:
 class Mission:
-	def __init__(self,player = None, continents = [], number_of_states = 0, eliminate_player= None, units_in_states = None, third_continent = False, explanation = ''):
+	def __init__(self,player = None, continents = [], number_of_states = 0, eliminate_player= None, units_in_states = None,
+	third_continent = False, explanation = ''):
 		self.player = player
 		self.continents = continents
 		self.number_of_states = number_of_states
@@ -263,7 +272,8 @@ class Mission:
 
 
 	def check_mission_complete(self):
-		self.missioncomplete = self.check_continents()and self.check_third_continent() and self.check_eliminate_player() and self.check_units_in_states() and self.check_number_of_states()
+		result = self.check_continents()and self.check_third_continent() and self.check_eliminate_player()
+		self.missioncomplete = result and self.check_units_in_states() and self.check_number_of_states()
 
 
 
@@ -280,8 +290,10 @@ mission9 = Mission(eliminate_player = white, explanation = 'Eliminate Player whi
 mission10 = Mission(number_of_states = 18, units_in_states = 2, explanation = 'Conquer 18 States with atleast 2 armies in each State')
 mission11 = Mission(continents = ['na', 'aus'], explanation = 'Conquer North America and Australia')
 mission12 = Mission(number_of_states = 24, explanation = 'Conquer 24 States')
-mission13 = Mission(continents = ['eu', 'sa'], third_continent = True, explanation = 'Conquer Europe, South America and a third Continent of your Choice')
-mission14 = Mission(continents = ['eu', 'aus'], third_continent = True, explanation = 'Conquer Europe, Australia and a third Continent of your Choice')
+mission13 = Mission(continents = ['eu', 'sa'], third_continent = True,
+ 					explanation = 'Conquer Europe, South America and a third Continent of your Choice')
+mission14 = Mission(continents = ['eu', 'aus'], third_continent = True, 
+					explanation = 'Conquer Europe, Australia and a third Continent of your Choice')
 
 missions = []
 

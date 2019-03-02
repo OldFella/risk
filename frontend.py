@@ -1,17 +1,13 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QGridLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import	QVBoxLayout, QGridLayout, QLabel, QWidget, QHBoxLayout, QLineEdit, QTextEdit
 from PyQt5.QtGui import QPainter, QPolygon, QRegion, QFont, QPalette, QPen
 from PyQt5.QtCore import QPoint, Qt
-#import shapely
-import copy
+
 import definitions
 import numpy
 import gamerules
-import tkinter
 
-root = tkinter.Tk()
-#width = root.winfo_screenwidth()
-#height = root.winfo_screenheight()
 
 red = ['#FF0000;', '#CC0000;', '#990000;','#770000','#FF3333','#CC3333','#993333']
 yellow = ['#888800', '#AAAA22','#CCCC44','#444400','#FFFF22']
@@ -48,7 +44,7 @@ class frontend(QMainWindow):
 			self.buttons = {}
 			self.width = width
 			self.height = height
-			print(self.width, self.height)
+			
 			self.player1 = True 
 			self.tabletoggle = True
 			self.number_of_players = number_of_players
@@ -75,7 +71,7 @@ class frontend(QMainWindow):
 			self.startpoint = (2* self.size_width, self.size_height)
 			self.initUI()
 			#self.debug_init()
-			#gamerules.calculate_missing_edges(definitions.graph)
+			
 
 
 	def initUI(self):
@@ -84,10 +80,6 @@ class frontend(QMainWindow):
 		self.setGeometry(0, 0, self.width, self.height)
 		self.setStyleSheet('background-color:#060149;')
 
-		#button_widget = QWidget(self)
-		#button_layout = QFormLayout()
-		#button_widget.setLayout(button_layout)
-		#self.mainLayout = QVBoxLayout()
 		pal = 'background-color: '
 		color = pal + '#FFFF00;'
 		for state in states:
@@ -120,31 +112,18 @@ class frontend(QMainWindow):
 			button.resize((max_x-min_x)*(self.size_width),(max_y-min_y)*(self.size_height))
 			random_color = getRandomColor()
 			color = pal + random_color
-			# random_number = numpy.random.randint(0,7)
-			# if state.continent == 'sa':
-			# 	color = pal + '#00CBEF;'
-			# if state.continent == 'eu':
-			# 	color = pal + red[random_number]
-			# if state.continent == 'af':
-			# 	color = pal + '#F88901;'
-			# if state.continent == 'na':
-			# 	color = pal + '#FFFF00'#yellow[random_number]
+			
 			button.clicked.connect(self.onClick_init)
 			self.connected_actions[button] = self.onClick_init
-			button.setStyleSheet(color) #+ 'border-width:5px;border-style: solid;border-color: black')
+			button.setStyleSheet(color) 
 
 			
 
 			self.buttons[button] = state
-			#button_layout.addWidget(button)
 
 		TableButton = QPushButton('Overview',self)
 		TableButton.clicked.connect(self.onClick_Table)
 
-		#main_widget = QWidget(self)
-		#textfieldLayout = QVBoxLayout()
-		#textfieldLayout.addStretch()
-		#main_widget.setLayout(textfieldLayout)
 		self.textfield1 = QLabel(self)
 		self.textfield2 = QLabel(self)
 		self.textfield1.setStyleSheet('Color : #FFFFFF')
@@ -190,15 +169,6 @@ class frontend(QMainWindow):
 		self.continue_button.move(38*self.size_width, 17 * self.size_height)
 		self.continue_button.clicked.connect(self.onClick_continue_button)
 
-		#textfield1.setAlignment(Qt.AlignRight)
-		#textfield2.setAlignment(Qt.AlignRight)
-		#textfieldLayout.addWidget(textfield1)
-		#textfieldLayout.addWidget(textfield2)
-		#main_widget.move(35*self.size_width, 10*self.size_height)
-		#textfieldLayout.addWidget(button_widget) 
-		#button_widget.setAlignment(Qt.AlignCenter)
-		#self.setCentralWidget(main_widget)
-		#self.calculate_begin()
 		self.showMaximized()
 
 	def onClick_Test(self):
@@ -221,7 +191,6 @@ class frontend(QMainWindow):
 		for x in range(len(states)):
 			tableWidget.setItem(3*numpy.floor(x/7)+0,x%7, QTableWidgetItem(states[x].name))
 			tableWidget.setItem(3*numpy.floor(x/7)+1,x%7, QTableWidgetItem(states[x].fraction.name))
-			#print(states[x].units)
 			tableWidget.setItem(3*numpy.floor(x/7)+2,x%7, QTableWidgetItem(str(states[x].units)))
 		tableWidget.resize(780,580)
 		window.setStyleSheet('background-color: #FFFFFF')
@@ -233,8 +202,6 @@ class frontend(QMainWindow):
 		for button in self.buttons.keys():
 			firstplayer = self.players[0]
 			state = self.buttons[button]
-			#print(firstplayer.name, state.name)
-			#print(firstplayer.states[state.continent])
 
 			state.fraction = firstplayer
 			state.units = 2
@@ -246,13 +213,11 @@ class frontend(QMainWindow):
 			button.clicked.disconnect(self.onClick_init)
 			button.clicked.connect(self.onClick_beginning_Phase)
 			self.connected_actions[button] = self.onClick_beginning_Phase
-			#print(firstplayer.name)
 		self.set_states_to_player()
 		for player in self.players:
 			print(player.name)
 			for continent in player.states:
 				print(continent)
-				#print(player.states[continent].name)
 				for state in player.states[continent]:
 					print(state.name)
 		self.calculate_begin()
@@ -264,7 +229,6 @@ class frontend(QMainWindow):
 	def give_mission_to_players(self):
 		missions = definitions.available_missions(self.number_of_players)
 
-		#print(missions)
 		for player in self.players:
 			mission = numpy.random.choice(missions)
 			player.mission = mission
@@ -294,7 +258,6 @@ class frontend(QMainWindow):
 		definitions.yellow.states = definitions.yellow_states_dic
 		definitions.purple.states = definitions.purple_states_dic
 		definitions.white.states = definitions.white_states_dic
-		#print(states_blue)
 
 	def onClick_init(self):
 		thisButton = self.sender()
@@ -326,7 +289,7 @@ class frontend(QMainWindow):
 		if successfullAction:
 			thisPlayer.units -= 1
 			thisPlayer.states[thisState.continent].append(thisState)
-			#print(thisPlayer.name, ' ',thisPlayer.units)
+			
 			self.players = self.players[1:]
 			self.players.append(thisPlayer)
 			self.repaint()
@@ -344,21 +307,21 @@ class frontend(QMainWindow):
 
 
 	def calculate_begin(self):
-		#print('calculate_begin')
+		
 		current_player = self.players[0]
 		additional_units = gamerules.calculate_additional_armys(current_player)
 		current_player.units = additional_units
 		for button in self.buttons.keys():
 			if self.connected_actions[button] != None:
-				#print(self.connected_actions[button])
+				
 				button.clicked.disconnect(self.connected_actions[button])
 				button.clicked.connect(self.onClick_beginning_Phase)
 				self.connected_actions[button] = self.onClick_beginning_Phase
 		self.currentPhase = 'Reinforcement'
-		#print(current_player.units)
+		
 
 	def onClick_beginning_Phase(self):
-		#print('onClick_beginning_Phase')
+		
 		current_player = self.players[0]
 		
 		current_button = self.sender()
@@ -367,7 +330,7 @@ class frontend(QMainWindow):
 			current_state.units += 1
 			current_player.units -= 1
 			current_button.setText(str(current_state.units))
-			#print(current_player.units)
+			
 			self.repaint()
 
 		if current_player.units == 0:
@@ -462,8 +425,7 @@ class frontend(QMainWindow):
 		self.currentPhase = 'Moving'
 		self.attacking_button.clicked.disconnect(self.onClick_attackbutton)
 		self.clear_textlabels()
-		#self.moving_button.clicked.disconnect(self.onClick_Test)
-		#self.moving_button.clicked.connect(self.onClick_movebutton)
+		
 		self.toggle = True
 		self.repaint()
 
@@ -508,14 +470,14 @@ class frontend(QMainWindow):
 			if not player.alive:
 				self.players.remove(player)
 		self.players.append(firstplayer)
-		#self.moving_button.clicked.disconnect(self.onClick_movebutton)
+		
 		self.calculate_begin()
 		self.clear_textlabels()
 		self.repaint()
 
 
 	def onClick_continue_button(self):
-		#print(self.currentPhase)
+		
 		if self.currentPhase == 'Attacking':
 			self.init_moving_phase()
 		elif self.currentPhase == 'Moving':
@@ -564,38 +526,6 @@ class frontend(QMainWindow):
 		paint.drawLine(10.8 * self.size_width, 4 * self.size_height - gap_y, 11.5 * self.size_width - gap_x, 1.3 * self.size_height + gap_y)
 
 		paint.drawLine(15 * self.size_width + gap_x, 2.5 * self.size_height + gap_y, 15.8 * self.size_width - gap_x, 3.3 * self.size_height - gap_y)
-		# if self.currentPhase == 'Attacking':
-		# 	attacking_state_string = 'None'
-		# 	defending_state_string = 'None'
-		# 	if self.selected_attacking_state != None:
-		# 		attacking_state_string = self.selected_attacking_state.name
-		# 	if self.selected_defending_state != None:
-		# 		defending_state_string = self.selected_defending_state.name
-
-		# 	paint.drawText(Event.rect(), Qt.AlignBottom, ('attacking_state: ' + attacking_state_string + ' defending_state: ' + defending_state_string))
-
-		# for state in states:
-		# 	qpoints = []
-		# 	if state.startpoint[0] == -1:
-		# 		break
-				
-		# 	for point in state.shape:
-				
-		# 		start_x = state.startpoint[0]*size
-		# 		start_y = state.startpoint[1]*size
-		# 		qpoints.append(QPoint(start_x + point[0]*size,start_y + point[1]*size))
-
-		# 	poly = QPolygon(qpoints)
-		# 	if state.continent == 'sa':
-		# 		color = QColor('#00CBEF')
-		# 	if state.continent == 'eu':
-		# 		color = QColor('#FF0000')
-		# 	if state.continent == 'af':
-		# 		color = QColor('#F88901')
-		# 	if state.continent == 'na':
-		# 		color = QColor('#FFFF00')
-		# 	paint.setBrush(color)
-		# 	paint.drawPolygon(poly)
 
 		paint.end()
 
@@ -604,5 +534,5 @@ if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	width = app.desktop().screenGeometry().width()
 	height = app.desktop().screenGeometry().height()
-	ex = frontend(3, width, height)
+	ex = frontend(6, width, height)
 	sys.exit(app.exec_())
