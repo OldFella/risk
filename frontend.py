@@ -9,10 +9,6 @@ import numpy
 import gamerules
 
 
-red = ['#FF0000;', '#CC0000;', '#990000;','#770000','#FF3333','#CC3333','#993333']
-yellow = ['#888800', '#AAAA22','#CCCC44','#444400','#FFFF22']
-
-
 states = list(definitions.graph.keys())
 
 
